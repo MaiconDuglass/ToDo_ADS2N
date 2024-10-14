@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diferença de Fuso Horário</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fafafa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background-color: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-spacing: 0;
+        }
+
+        table th, table td {
+            padding: 12px;
+            border-bottom: 1px solid #dbdbdb;
+            text-align: left;
+            font-size: 14px;
+            color: #333;
+        }
+
+        table th {
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #8e8e8e;
+        }
+
+        table td {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .highlight-on-hover {
+            transition: background-color 0.3s ease;
+        }
+
+        .highlight-on-hover:hover {
+            background-color: #f0f8ff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Diferença de Fuso Horário</h1>
+        
+        <table>
+            <tr>
+                <th>País</th>
+                <th>Diferença para o Brasil</th>
+            </tr>
+            <tr>
+                <td>Brasil (Referência)</td>
+                <td id="brasil">GMT-3</td>
+            </tr>
+            <tr>
+                <td>Estados Unidos (Nova York)</td>
+                <td id="ny"></td>
+            </tr>
+            <tr>
+                <td>Japão</td>
+                <td id="japao"></td>
+            </tr>
+            <tr>
+                <td>Reino Unido</td>
+                <td id="uk"></td>
+            </tr>
+            <tr>
+                <td>Austrália</td>
+                <td id="australia"></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        // Função para calcular a diferença de fuso horário
+        function calcularDiferenca(timeZone1, timeZone2) {
+            const dataAtual = new Date();
+            
+            // Hora em cada fuso
+            const horario1 = new Date(dataAtual.toLocaleString('en-US', { timeZone: timeZone1 }));
+            const horario2 = new Date(dataAtual.toLocaleString('en-US', { timeZone: timeZone2 }));
+
+            // Diferença em horas
+            const diferenca = (horario2 - horario1) / (1000 * 60 * 60);
+            const horasDif = Math.abs(diferenca);
+
+            // Adiciona o sinal de mais ou menos dependendo do valor
+            return diferenca > 0 ? `+${horasDif} horas` : `-${horasDif} horas`;
+        }
+
+        // Atualiza a diferença de fuso horário
+        function atualizarFusos() {
+            const brasilFuso = 'America/Sao_Paulo';
+            const nyFuso = 'America/New_York';
+            const japaoFuso = 'Asia/Tokyo';
+            const ukFuso = 'Europe/London';
+            const australiaFuso = 'Australia/Sydney';
+
+            document.getElementById('ny').innerHTML = calcularDiferenca(brasilFuso, nyFuso);
+            document.getElementById('japao').innerHTML = calcularDiferenca(brasilFuso, japaoFuso);
+            document.getElementById('uk').innerHTML = calcularDiferenca(brasilFuso, ukFuso);
+            document.getElementById('australia').innerHTML = calcularDiferenca(brasilFuso, australiaFuso);
+        }
+
+        // Atualiza as diferenças a cada minuto
+        setInterval(atualizarFusos, 60000);
+
+        // Atualiza imediatamente ao carregar a página
+        atualizarFusos();
+    </script>
+
+</body>
+</html>
